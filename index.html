@@ -1,34 +1,39 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>RestoMaps</title>
-    <meta name="viewport" content="initial-scale=1.0">
-        <meta charset="utf-8">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+    <meta charset="utf-8">
+    <title>Resto Maps</title>
 
     <link rel="stylesheet" type="text/css" href="styles/style.css">
-    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
-    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
-
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="scripts/main.js?v4"></script>
-    <script async defer
-    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZ8Y5sZPKNOxTmR4c1AdHUxBHGNJpvQw&callback=initMap&libraries=places,drawing,visualization">
-    </script>
-
   </head>
   <body>
-  	<div id="panel">
-	    <div class="content">
-	        <strong>Restaurant Types :</strong>
-	        <select id="types"></select>
-	    </div>
-
-	    <div id="list"></div>
-        <div id="directions-panel"></div>
-	</div>
-
     <div id="map"></div>
-    <!-- <div id="legend"><h3>Legend</h3></div> -->
-    
+    <div id="right-panel">
+
+      <strong>Types :</strong>
+      <select id="types">
+        <option value="">All</option>
+        <option value="food">Food</option>
+        <option value="restaurant">Restaurant</option>
+        <option value="cafe">Cafe</option>
+        <option value="store">Store</option>
+        <option value="meal_delivery">Meal Delivery</option>
+        <option value="night_club">Night Club</option>
+      </select>
+
+      <h2>Results</h2>
+      <ul id="places"></ul>
+      <button id="more">More results</button>
+
+      
+    </div>
+    <div id="right-below-panel">
+      <strong>Directions</strong>
+      <div id="directions-panel">
+    </div>
+    <script src="scripts/main.js?v4"></script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZ8Y5sZPKNOxTmR4c1AdHUxBHGNJpvQw&callback=initMap&libraries=places,drawing,visualization"></script>
   </body>
 </html>
