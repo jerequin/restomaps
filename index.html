@@ -25,7 +25,7 @@ var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Custom Legend</title>
+    <title>RestoMaps</title>
     <meta name="viewport" content="initial-scale=1.0">
         <meta charset="utf-8">
 
@@ -47,14 +47,11 @@ var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
 	    </div>
 	    <div class="content">
 	        <strong>Select restaurant type:</strong>
-	        <select id="types">
-	            <!-- <option value="">All</option>
-	            <option value="fast food">Fast Food</option>
-	            <option value="family style">Family Style</option>
-	            <option value="casual dining">Casual Dining</option>
-	            <option value="coffeehouse">Coffeehouse</option>
-	            <option value="bakeshop">Bakeshop</option> -->
-	        </select>
+	        <select id="types"></select>
+	    </div>
+
+	    <div class="content">
+
 	    </div>
 
 	    <div class="content">
@@ -62,8 +59,6 @@ var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
         </div>
         <div id="directions-panel"></div>
 	</div>
-
-
 
     <div id="map"></div>
     <!-- <div id="legend"><h3>Legend</h3></div> -->
