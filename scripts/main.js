@@ -1,10 +1,8 @@
 
 let map, infoWindow, resultData, defaultLoc, marker;
 let restaurants = [];
-let allTypes = [];
 let markerDetails;
-let uniqueTypes, circle, rectangle, allMarkers = [], markerOptions, circleOptions,
-circlerestaurants;
+let uniqueTypes, circle, rectangle, allMarkers = [], markerOptions, circleOptions;
 
 function initMap() {
   defaultLoc = new google.maps.LatLng(10.3157, 123.8854); // Cebu City
@@ -68,6 +66,7 @@ function onCircleComplete(shape) {
         circle = shape;
 
         let newService = new google.maps.places.PlacesService(map);
+        let circlerestaurants;
 
         newService.nearbySearch({
             location: {lat : circle.getCenter().lat(), lng : circle.getCenter().lng() },
@@ -84,9 +83,15 @@ function onCircleComplete(shape) {
                     allTypes.push(types);
                   });
                 });
+                 getUniqueTypes(allTypes);
+            }
+            let restoNumbers = 0;
+            if (typeof circlerestaurants != "undefined") {
+              restoNumbers = circlerestaurants.length;
             }
 
-            createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), circlerestaurants.length);
+
+            createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers);
         });
         // console.log('radius', circle.getRadius());
         // console.log('lat', circle.getCenter().lat());
@@ -137,35 +142,51 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 function getRestaurants() { // restaurants from google
     service = new google.maps.places.PlacesService(map);
     console.log("Default Location : ",defaultLoc);
-    service.nearbySearch({
-        location: defaultLoc,
-        radius: 5500,
-        type: ['restaurant'],
-    }, function callback(results, status) {
-        if (status === google.maps.places.PlacesServiceStatus.OK) {
-            restaurants = results;
-            console.log("restaurants : ", restaurants);
-            restaurants.forEach(function(resto){
-              let retTypes = callMarker(resto);
-              retTypes.forEach(function(types){
-                allTypes.push(types);
+
+    let radiusVar = 5500;
+    let allTypes = [];
+
+
+    while (radiusVar >= 500) {
+
+      service.nearbySearch({
+          location: defaultLoc,
+          radius: radiusVar,
+          type: ['restaurant'],
+      }, function callback(results, status) {
+          if (status === google.maps.places.PlacesServiceStatus.OK) {
+              restaurants = results;
+              console.log("restaurants : ", restaurants);
+              restaurants.forEach(function(resto){
+                let retTypes = callMarker(resto);
+                retTypes.forEach(function(types){
+                  allTypes.push(types);
+                });
               });
-            });
+
+              getUniqueTypes(allTypes);
+
+              setPlaces();
+          }
+      });
 
 
-            uniqueTypes = [];
-            allTypes.forEach(function(x){
-              if($.inArray(x, uniqueTypes) === -1) 
-                uniqueTypes[x] = x;
-            });
+      radiusVar -= 500;
+    }
 
-            uniqueTypes.unshift("All"); // add All in first selection
-            console.log("uniqueTypes : ", uniqueTypes);
 
-            setTypes(uniqueTypes.sort());
-            setPlaces();
-        }
-    });
+    
+}
+
+function getUniqueTypes(allTypes){
+  uniqueTypes = [];
+  allTypes.forEach(function(x){
+    if($.inArray(x, uniqueTypes) === -1) 
+      uniqueTypes[x] = x;
+  });
+
+  uniqueTypes.unshift("All"); // add All in first selection
+  setTypes(uniqueTypes.sort());
 }
 
 function setTypes (uniqueTypes) { // setting of resto types in panel
