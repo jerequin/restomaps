@@ -2,10 +2,9 @@
 let map, infoWindow, resultData, defaultLoc, marker;
 let restaurants = [];
 let allTypes = [];
+let allMarkers = [];
 let markerDetails;
-let uniqueTypes = [], circle, rectangle, allMarkers = [], markerOptions, circleOptions;
-
-
+let uniqueTypes = [], circle, rectangle, markerOptions, circleOptions;
 
 function initMap() {
   defaultLoc = new google.maps.LatLng(10.3157, 123.8854); // Cebu City
@@ -18,12 +17,8 @@ function initMap() {
   infowindow = new google.maps.InfoWindow;
 
   $('#types').on('change', function() { //changing types
-      // clearOverlays();
-      // eachRestaurants();
-
       clearMarkers();
       setPlaces();
-      // setTotals();
   });
   // getUserLocation() // used if you want to get your current location
   getRestaurants();
@@ -94,22 +89,14 @@ function onCircleComplete(shape) {
             }
 
 
-            createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers);
+            createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers, circlerestaurants);
         });
         // console.log('radius', circle.getRadius());
         // console.log('lat', circle.getCenter().lat());
         // console.log('lng', circle.getCenter().lng());
     }
 
-function createCircleLabel(lat, lng, restoNumbers){
-  console.log("restoNumbers : ", restoNumbers);
-  var newmarker = '';
-   newmarker = new google.maps.Marker({
-      map: map,
-      position: {lat : lat, lng : lng},
-      label: restoNumbers.toString()
-  });
-}
+
 
 
 function getUserLocation(){
@@ -142,16 +129,16 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 
+// generate retaurants list
+function getList(newMarker) {
+    document.getElementById('list').innerHTML += '<span><strong>Restaurants:</strong> ' + newMarker.name +'</span><br>';
+}
+
 function getRestaurants() { // restaurants from google
     service = new google.maps.places.PlacesService(map);
     console.log("Default Location : ",defaultLoc);
 
     let radiusVar = 5500;
-    
-    let arrUnique = [];
-
-    // while (radiusVar >= 500) {
-
       service.nearbySearch({
           location: defaultLoc,
           radius: radiusVar,
@@ -167,19 +154,11 @@ function getRestaurants() { // restaurants from google
                 });
               });
 
-              arrUnique = getUniqueTypes(allTypes);
+              getUniqueTypes(allTypes);
+              setPlaces()
 
-              // setPlaces();
           }
       });
-
-
-    //   radiusVar -= 500;
-    // }
-
-    console.log("allTypes : ", allTypes);
-  
-    setTypes(arrUnique.sort()); 
 }
 
 function getUniqueTypes(allTypes){
@@ -188,8 +167,9 @@ function getUniqueTypes(allTypes){
       uniqueTypes[x] = x;
   });
 
-  return uniqueTypes;
-  console.log("allTypes : ", allTypes);
+  uniqueTypes.unshift("All");
+
+  setTypes(uniqueTypes.sort()); 
 }
 
 function setTypes (uniqueTypes) { // setting of resto types in panel
@@ -203,50 +183,35 @@ function setTypes (uniqueTypes) { // setting of resto types in panel
 // go through each restaurants
 function setPlaces() {
 
-  
     let type = document.getElementById("types").value;
-    console.log("THIS RESTAURANTS : ", type);
     restaurants.forEach(function(resto){
-      if(restaurants.indexOf(type) != -1 || type != "0")
+      if(resto.types.includes(type) == true)
       {  
-        console.log("TRUE");
-         callMarker(resto);
-      }else{ //if All is selected
-        console.log("FALSE");
-        // callMarker(resto);
+        console.log("TRUE : ", resto.types);
+        clearMarkers();
+        callMarker(resto);
       }
     });
-    // setTotals();
-
-    /*// check if circle exists; if true, count summary within the radius
-    if (circle) {
-        var circle_pos = new google.maps.LatLng(circle.getCenter().lat(), circle.getCenter().lng());
-        totalResto = 0, total_customers = 0, total_sales = 0; // reset counters
-        document.getElementById('restaurants_list').innerHTML = ''; // clear restaurants list
-
-        $.each(markersArray, function(i, v) {
-            if (google.maps.geometry.spherical.computeDistanceBetween(v.getPosition(), circle_pos) < circle.getRadius()) {
-                listRestaurants(v); // restaurants_list
-                totalResto++;
-            }
-        });
-    }*/
-
-    // renderTotals();
 }
 
+function createCircleLabel(lat, lng, restoNumbers, resto){
 
-/*function setTotals() {
-    document.getElementById('totalResto').innerHTML = totalResto; // total restaurants fetched
-}*/
 
+   marker = new google.maps.Marker({
+      map: map,
+      position: {lat : lat, lng : lng},
+      label: restoNumbers.toString()
+  });
+
+   allMarkers[resto.id] = marker;
+   setMarkerInfo(marker, resto);
+}
 
 function callMarker(resto){
 
-
   var icon = {
       url: resto.icon,
-      scaledSize: new google.maps.Size(25, 25),
+      scaledSize: new google.maps.Size(30, 30),
   };
 
 
@@ -257,10 +222,25 @@ function callMarker(resto){
       title: resto.name
   });
 
-  allMarkers[resto.id] = (marker);
+  marker.id = resto.id;
+  marker.name = resto.name;
 
-  let venues = callFourSquare(resto.geometry.location.toUrlValue(7), resto.name);
-    var opening = '';
+  allMarkers[resto.id] = marker;
+
+  getList(marker);
+
+  let venuesFS = callFourSquare(resto.geometry.location.toUrlValue(7), resto.name);
+    
+
+  setMarkerInfo(marker,resto,venuesFS);
+
+  return resto.types;
+
+}
+
+function setMarkerInfo(newMarker,resto,venuesFS = {}){
+
+  var opening = '';
     if (resto.opening_hours) {
         if (resto.opening_hours.open_now) {
             opening = '<strong><span style="color: green;">Open now</span></strong><br>';
@@ -269,17 +249,19 @@ function callMarker(resto){
         }
     }
 
-
+  var restoName = (resto.name) ? '<strong>' + resto.name + ' </strong><br><br>' : '' ;
+    var restoVicinity = (resto.vicinity) ? resto.vicinity + '<br> <a href="#" id="get-direction-' + resto.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' : '' ;
     var specialty = (resto.specialty) ? 'Specialty : ' + resto.specialty + '<br>' : '' ;
     var restoTypes = (resto.types) ? 'Restaurant type : ' + resto.types + '<br>' : '';
     var rating = (resto.specialty) ? 'Rating : ' + resto.specialty + '<br>' : '' ;
-    var checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
-    var customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
+    var checkinCount = (venuesFS.checkinCount) ? 'Checkin Count : ' + venuesFS.checkinCount + '<br>': "";
+    var customerCount = (venuesFS.customerCount) ? 'Customer Count : ' + venuesFS.customerCount + '<br>': "";
 
     // add on click event on markers to show restaurant details
-    google.maps.event.addListener(marker, 'click', function() {
-        infowindow.setContent('<div><strong>' + resto.name + '</strong><br>' +
-            resto.vicinity + '<br> <a href="#" id="get-direction-' + resto.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' +
+    google.maps.event.addListener(newMarker, 'click', function() {
+        infowindow.setContent('<div>' + 
+            restoName + '' +
+            restoVicinity +
             opening +
             restoTypes +
             specialty +
@@ -294,18 +276,17 @@ function callMarker(resto){
     $(document).off('click', '#get-direction-' + resto.id).on('click', '#get-direction-' + resto.id, function() {
         calculateAndDisplayRoute(resto.geometry.location, resto.name);
     });
-
-
-
-  return resto.types;
-
 }
 
 function callFourSquare(coordinates, restoName) { // get by coordinates and name, get customer counts and checkin counts
   try{
+
+    var clientId = "3NDCCM2DYYVQUQXIDBB2MMIGVPTNDGYEXK4CIAQSUXNLQX3F";
+    var clientSecret = "S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW";
+    var oAuthToken = "I25B33JZSODPTRGZL51MUF1LH313XORDHNRQELUVIFHSBYEF";
     var xhttp = new XMLHttpRequest();
     // var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id=3NDCCM2DYYVQUQXIDBB2MMIGVPTNDGYEXK4CIAQSUXNLQX3F&client_secret=S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW&v=20180530"
-    var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id=3NDCCM2DYYVQUQXIDBB2MMIGVPTNDGYEXK4CIAQSUXNLQX3F&client_secret=S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW&v=20180530"
+    var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id="+clientId+"&client_secret="+clientSecret+"&oauth_token="+oAuthToken+"&v=20180530"
 
     
     xhttp.open("GET", url, false);
@@ -314,7 +295,7 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
 
     let returnResponse = {};
 
-    console.log(response.response.venues);
+    // console.log(response.response.venues);
     if(response){
       returnResponse.customerCount = (typeof response.response.venues[0].stats.usersCount != "undefined") ? response.response.venues[0].stats.usersCount : "";
       returnResponse.checkinCount = (typeof response.response.venues[0].stats.checkinsCount != "undefined") ? response.response.venues[0].stats.checkinsCount : "";
@@ -330,48 +311,11 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
 // clear markers
 function clearMarkers() {
 
-  console.log("allMarkers : ", marker);
-
-  // allMarkers.forEach(function(marker){
-  //   marker.setMap(null);
-  // });
-
-  // allMarkers = [];
     $.each(allMarkers, function(i, marker) {
         marker.setMap(null);
     });
+
     allMarkers = {};
-}
-
-// set destination
-function setDestination(destination, name) {
-    var request = {
-        destination: destination,
-        origin: defaultLoc,
-        travelMode: 'DRIVING'
-    };
-
-    // directions request on service
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
-
-    calculateAndDisplayRoute(directionsService, directionsDisplay);
-    /*directionsService.route(request, function(response, status) {
-        if (status == 'OK') {
-            document.getElementById('routes').innerHTML = '<div><strong>GOING TO '+name+'</strong></div>'; // reset routes details
-
-            var routes = response.routes[0].legs[0].steps;
-            if (routes) {
-                for (var i = 1; i <= routes.length; i++) {
-                    document.getElementById('routes').innerHTML += '<div><strong>(' + i + ')</strong><br>' + routes[i - 1].instructions + '</div><br>';
-                }
-            } else {
-                document.getElementById('routes').innerHTML = 'No direction found.';
-            }
-
-            directionsDisplay.setDirections(response);
-        }
-    });*/
 }
 
 // get and set destination
@@ -381,6 +325,7 @@ function calculateAndDisplayRoute(destination, name) {
     var directionsDisplay = new google.maps.DirectionsRenderer;
     directionsDisplay.set('directions', null);
     directionsDisplay.setMap(null);
+    directionsDisplay.setDirections(null);
 
     directionsDisplay.setMap(map);
   directionsService.route({
@@ -410,9 +355,3 @@ function calculateAndDisplayRoute(destination, name) {
     }
   });
 }
-
-
-// https://api.foursquare.com/v2/venues/2408789fbbee59929e90d3d834422b63e2658f11?client_id=LDIDV10EGUWWYYBRP00WM2XPAXHRLK2ZFSJJM324PODF0HTV&client_secret=0I1YO3JFOVXBQEPKL4PQ52BLYNZKWO5BAKZZAEPEWOMKDHIO&v=1
-
-
-// https://api.foursquare.com/v2/venues/search?near=Sarrosa%20International%20Hotel%20&%20Residential%20Suites?client_id=3NDCCM2DYYVQUQXIDBB2MMIGVPTNDGYEXK4CIAQSUXNLQX3F&client_secret=S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW&v=20180530
