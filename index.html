@@ -1,41 +1,72 @@
+<!-- <!DOCTYPE html>
 <html>
-    <head>
-        <title>Bootstrap & Google maps Tutorial by Bootstrapious.com</title>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
-        <link href='https://fonts.googleapis.com/css?family=Montserrat:400,700' rel='stylesheet' type='text/css'>
-        <!-- <link href='custom.css' rel='stylesheet' type='text/css'> -->
-    </head>
-    <body>
+<body>
 
-        <div class="container">
+<h1>My First Google Map</h1>
 
-            <div class="row">
+<div id="googleMap" style="width:100%;height:400px;"></div>
 
-                <div class="col-lg-8 col-lg-offset-2">
+<script>
+function initMap() {
+var mapProp= {
+    center:new google.maps.LatLng(14.5995,120.9842),
+    zoom:15,
+};
+var map=new google.maps.Map(document.getElementById("googleMap"),mapProp);
+}
+</script>
 
-                    <h1>Google maps & Bootstrap tutorial from <a href="http://bootstrapious.com">Bootstrapious.com</a></h1>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBZKK7QBxA_SFhosQbQYmQnhBJrvJSUEHw&callback=initMap"></script>
 
-                    <p class="lead">This is a demo for our tutorial showing you how to add a custom styled Google maps into a Bootstrap page.</p>
 
-                    <p>Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean ultricies mi vitae est. Mauris placerat eleifend leo.</p>
+</body>
+</html> -->
 
-                    <p><strong>Pellentesque habitant morbi tristique</strong> senectus et netus et malesuada fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget, tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. <em>Aenean ultricies mi vitae est.</em> Mauris placerat eleifend leo. Quisque sit amet est et sapien ullamcorper pharetra. Vestibulum erat wisi, condimentum sed, <code>commodo vitae</code>, ornare sit amet, wisi. Aenean fermentum, elit eget tincidunt condimentum, eros ipsum rutrum orci, sagittis tempus lacus enim ac dui. <a href="#">Donec non enim</a> in turpis pulvinar facilisis. Ut felis.</p>
-                    
-                </div>
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Custom Legend</title>
+    <meta name="viewport" content="initial-scale=1.0">
+        <meta charset="utf-8">
 
-            </div> 
+    <link rel="stylesheet" type="text/css" href="styles/style.css">
+    <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
+    <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
 
-        </div> 
-
-        <div id="map"></div>
-
-        <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
-        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-        <script async defer
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="scripts/main.js?v4"></script>
+    <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZ8Y5sZPKNOxTmR4c1AdHUxBHGNJpvQw&callback=initMap&libraries=places,drawing,visualization">
     </script>
-        <script src="scripts/main.js"></script>
-    </body>
+
+  </head>
+  <body>
+  	<div id="panel">
+	    <div class="headLabel">
+	        <strong>TYPES</strong>
+	    </div>
+	    <div class="content">
+	        <strong>Select restaurant type:</strong>
+	        <select id="types">
+	            <!-- <option value="">All</option>
+	            <option value="fast food">Fast Food</option>
+	            <option value="family style">Family Style</option>
+	            <option value="casual dining">Casual Dining</option>
+	            <option value="coffeehouse">Coffeehouse</option>
+	            <option value="bakeshop">Bakeshop</option> -->
+	        </select>
+	    </div>
+
+	    <div class="content">
+            <p id="routes" class="overflow-cont m0">No direction selected.</p>
+        </div>
+        <div id="directions-panel"></div>
+	</div>
+
+
+
+    <div id="map"></div>
+    <!-- <div id="legend"><h3>Legend</h3></div> -->
+    
+  </body>
 </html>
