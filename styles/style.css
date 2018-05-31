@@ -5,6 +5,7 @@ height: 100%;
 }
 /* Optional: Makes the sample page fill the window. */
 html, body {
+	font-family: Helvetica, Arial, Sans-Serif;
 height: 100%;
 margin: 0;
 padding: 0;
@@ -58,7 +59,7 @@ li:nth-child(odd) {
 background-color: #fcfcfc;
 }
 .sidenav {
-margin: 10px;
+margin: 50px 10px 10px 50px;
 margin-top: 50px;
 height: 100%;
 width: 300px;

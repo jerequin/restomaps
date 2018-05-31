@@ -2,8 +2,9 @@
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-var map, defaultLocation, circle, circleMarker, directionsDisplay, directionsService;
-var markers = [];
+var map, defaultLocation, circle, circleMarker, directionsDisplay, directionsService, 
+      infowindow;
+var marker, markers = [];
 var circlemarkers = [];
 var zomatoKEY = "b1cd2a52d0e02ba345f0eb9f29088097";
 
@@ -118,7 +119,7 @@ function createMarkers(places) {
       scaledSize: new google.maps.Size(25, 25)
     };
 
-    var marker = new google.maps.Marker({
+    marker = new google.maps.Marker({
       map: map,
       icon: image,
       title: place.name,
@@ -181,7 +182,7 @@ function deleteCircleMarkers() {
 
 function setMarkerInfo(newMarker, place){
 
-  var infowindow = new google.maps.InfoWindow;
+  infowindow = new google.maps.InfoWindow;
   var opening = '';
     if (typeof place != "undefined" && place.opening_hours) {
         if (place.opening_hours.open_now) {
@@ -223,7 +224,9 @@ function setMarkerInfo(newMarker, place){
             checkinCount +
             customerCount
         );
+
         infowindow.open(map, this);
+
     });
 
     // on click get direction
@@ -293,7 +296,6 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     let returnResponse = {};
 
     if(response){
-      console.log(response.response.venues[0]);
       returnResponse.customerCount = (typeof response.response.venues[0].stats.usersCount != "undefined") ? response.response.venues[0].stats.usersCount : "";
       returnResponse.checkinCount = (typeof response.response.venues[0].stats.checkinsCount != "undefined") ? response.response.venues[0].stats.checkinsCount : "";
 
