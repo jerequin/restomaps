@@ -2,7 +2,7 @@
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-var map, defaultLocation;
+var map, defaultLocation, circle;
 var markers = [];
 
 
@@ -13,6 +13,7 @@ function initMap() {
     center: defaultLocation,
     zoom: 15
   });
+
 
   // Create the places service.
   var service = new google.maps.places.PlacesService(map);
@@ -45,6 +46,9 @@ function initMap() {
       deleteLists();
       filterTypes();
   });
+
+
+  draw();
 
 }
 
@@ -86,6 +90,8 @@ function filterTypes() {
     };
   });
 
+  draw();
+
 
 }
 
@@ -97,8 +103,6 @@ function deleteLists(places) {
 function createMarkers(places) {
   var bounds = new google.maps.LatLngBounds();
   var placesList = document.getElementById('places');
-
-
 
   for (var i = 0, place; place = places[i]; i++) {
     // console.log("place : ", place);
@@ -160,12 +164,13 @@ function setMarkerInfo(newMarker, place){
 
   var infowindow = new google.maps.InfoWindow;
   var opening = '';
-    if (place.opening_hours) {
+    if (typeof place != "undefined" && place.opening_hours) {
         if (place.opening_hours.open_now) {
             opening = '<strong><span style="color: green;">Open now</span></strong><br>';
         } else {
             opening = '<strong><span style="color: red;">Closed</span></strong><br>';
         }
+
     }
 
   var placeName = (place.name) ? '<strong>' + place.name + ' </strong><br><br>' : '' ;
@@ -275,3 +280,77 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
   }
 }
 
+function draw(){
+  var drawingManager = new google.maps.drawing.DrawingManager({
+      drawingMode: null,
+      drawingControl: true,
+      drawingControlOptions: {
+        position: google.maps.ControlPosition.TOP_CENTER,
+        drawingModes: [ 'circle']
+      },
+      // markerOptions: {icon: 'https://developers.google.com/maps/documentation/javascript/examples/full/images/beachflag.png'},
+      circleOptions: {
+        fillColor: '#044B94',
+        fillOpacity: 0.4,
+        strokeWeight: 5,
+        clickable: false,
+        editable: false,
+        zIndex: 1
+      }
+    });
+  drawingManager.setMap(map);
+
+  google.maps.event.addListener(drawingManager, 'circlecomplete', onCircleComplete);
+
+}
+
+
+function onCircleComplete(shape) {
+    if (shape == null || (!(shape instanceof google.maps.Circle))) return;
+
+    if (circle != null) {
+        circle.setMap(null);
+        circle = null;
+    }
+
+    circle = shape;
+
+    let newService = new google.maps.places.PlacesService(map);
+    let circlerestaurants;
+
+    let types = document.getElementById("types").value;
+
+    if (types == "") {
+      types = "restaurant";
+    }
+
+    newService.nearbySearch({
+        location: {lat : circle.getCenter().lat(), lng : circle.getCenter().lng() },
+        radius: circle.getRadius(),
+        type: [types]
+,    }, function callback(results, status) {
+        let restoNumbers = 0;
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            circlerestaurants = results;
+            createMarkers(circlerestaurants);
+            restoNumbers = circlerestaurants.length;
+        }
+
+        createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers, circlerestaurants);
+    });
+    console.log('radius', circle.getRadius());
+    console.log('lat', circle.getCenter().lat());
+    console.log('lng', circle.getCenter().lng());
+}
+
+function createCircleLabel(lat, lng, restoNumbers, place){
+
+   marker = new google.maps.Marker({
+      map: map,
+      position: {lat : lat, lng : lng},
+      label: restoNumbers.toString()
+  });
+
+   markers.push(marker);
+   setMarkerInfo(marker, place);
+}
