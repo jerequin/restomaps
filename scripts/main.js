@@ -260,7 +260,6 @@ function calculateAndDisplayRoute(destination, name) {
       if (status === 'OK') {
         directionsDisplay.setDirections(response);
 
-        console.log("directionsDisplay : ", directionsDisplay);
         var route = response.routes[0];
         var summaryPanel = document.getElementById('directions-panel');
         summaryPanel.innerHTML = '';
