@@ -25,7 +25,7 @@ See : https://jerequin.github.io/restomaps/
 ### Exercise 
 
  1. ***Plot restaurants across Cebu.***
-	- Using Places API, it has restriction to get only 20 and upto 60 records if using pagination. Added button More Results to search restaurants (or any type).
+	- Using Places API, it has restriction to get only 20 and upto 60 records if using pagination. Added button More Results to display the records.
  2.  ***Each restaurant will have at least 1 food specialty.*** 
 	 - There's no specialty field when using nearbysearch Places API (I think) so I didn't place or display one.
 	 - sample response:  
