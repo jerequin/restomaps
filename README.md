@@ -7,13 +7,13 @@ See : https://jerequin.github.io/restomaps/
 ## Features
 
  - Display Restaurants using Google Maps Places API
-	 - Displays in Right Panel
+	 - Displays in Left Panel
  - Filter list using dropdown types
- 	 - Displays in Right Panel
+ 	 - Displays in Left Panel
  - See Destination from point A to point B
 	 - Direction Service
 	 - Direction Display
-	 - Displays in Right Panel the Streets
+	 - Displays in Left Panel the Streets
  - Draw Circle using DrawingManager Circle
 	 - Display Number of Restaurants (or any type you have set)
 	 - Search and Display Restaurants around the radius of the Circle
@@ -44,7 +44,7 @@ See : https://jerequin.github.io/restomaps/
 			vicinity:"J. Llorente Street, Cebu City`
 
  3.  ***A layer panel can filter the restaurant type to show.***
-	 - In the right-panel, indicated types which I think can display different types of restaurant based on what I got in Places API
+	 - In the Left Panel, indicated types which I think can display different types of restaurant based on what I got in Places API
 		 - Food
 		 - Restaurant
 		 - Cafe
