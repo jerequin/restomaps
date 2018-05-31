@@ -5,8 +5,6 @@
 var map, defaultLocation;
 var markers = [];
 
-var directionsService ;
-var directionsDisplay;
 
 function initMap() {
   // Create the map.
@@ -48,15 +46,8 @@ function initMap() {
       filterTypes();
   });
 
-  $('.get-direction').on('click', function() { //changing types
-      deleteDestiDisplay();
-  });
-
 }
 
-function deleteDestiDisplay(){
-  directionDisplay.setPanel(null);
-}
 
 function filterTypes() {
   // Create the map.
@@ -139,9 +130,7 @@ function createMarkers(places) {
 
     bounds.extend(place.geometry.location);
 
-    let venues = callFourSquare(place.geometry.location.toUrlValue(5), place.name);
-
-    setMarkerInfo(marker,place, venues); // set marker info 
+    setMarkerInfo(marker,place); // set marker info 
 
 
   }
@@ -167,7 +156,7 @@ function deleteMarkers() {
 }
 
 
-function setMarkerInfo(newMarker, place, venues){
+function setMarkerInfo(newMarker, place){
 
   var infowindow = new google.maps.InfoWindow;
   var opening = '';
@@ -186,17 +175,19 @@ function setMarkerInfo(newMarker, place, venues){
     var rating = (place.specialty) ? 'Rating : ' + place.specialty + '<br>' : '' ;
 
     var from = "";
-    if (venues != null){
-      var from = "<strong>From FOURSQUARE :</strong><br>";
-      var checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
-      var customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
-
-    }
+    var checkinCount = "";
+    var customerCount = "";
     
-
-    // console.log(checkinCount + "," + customerCount);
     // add on click event on markers to show restaurant details
     google.maps.event.addListener(newMarker, 'click', function() {
+      let venues = callFourSquare(place.geometry.location.toUrlValue(5), place.name); //to display data from FourSquare
+      if (venues != ""){
+        from = "<strong>From FOURSQUARE :</strong><br>";
+        checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
+        customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
+
+      }
+
         infowindow.setContent('<div>' + 
             placeName + '' +
             placeVicinity +
@@ -215,7 +206,6 @@ function setMarkerInfo(newMarker, place, venues){
     $(document).off('click', '#get-direction-' + place.id).on('click', '#get-direction-' + place.id, function() {
 
         calculateAndDisplayRoute(place.geometry.location, place.name);
-        deleteDestiDisplay();
 
     });
 }
@@ -223,8 +213,8 @@ function setMarkerInfo(newMarker, place, venues){
 // get and set destination
 function calculateAndDisplayRoute(destination, name) {
     // directions request on service
-    directionsService = new google.maps.DirectionsService;
-    directionsDisplay = new google.maps.DirectionsRenderer;
+    var directionsService = new google.maps.DirectionsService;
+    var directionsDisplay = new google.maps.DirectionsRenderer;
 
     directionsDisplay.setMap(map);
     directionsService.route({
@@ -270,7 +260,6 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     xhttp.open("GET", url, false);
     xhttp.send();
     var response = JSON.parse(xhttp.responseText);
-
     let returnResponse = {};
 
     if(response){
@@ -281,7 +270,8 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     
     return returnResponse;
   }catch(e){
-    return {};
+    console.log("error : ", e);
+    return "";
   }
 }
 
