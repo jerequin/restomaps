@@ -29,7 +29,7 @@ function initMap() {
   service.nearbySearch(
   {
     location: defaultLocation, 
-    radius: 1000, 
+    radius: 4000, 
     type: ['restaurant']
   },
   function(results, status, pagination) {
@@ -81,7 +81,7 @@ function filterTypes() {
   service.nearbySearch(
   {
     location: defaultLocation, 
-    radius: 1000, 
+    radius: 4000, 
     type: [types]
   },
   function(results, status, pagination) {
