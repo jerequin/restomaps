@@ -22,6 +22,7 @@ function initMap() {
   var getNextPage = null;
   var moreButton = document.getElementById('more');
   moreButton.onclick = function() {
+    infowindow.close();
     moreButton.disabled = true;
     if (getNextPage) getNextPage();
   };
@@ -193,11 +194,14 @@ function setMarkerInfo(newMarker, place){
 
     }
 
-  var placeName = (place.name) ? '<strong>' + place.name + ' </strong><br><br>' : '' ;
-    var placeVicinity = (place.vicinity) ? place.vicinity + '<br> <a href="#" id="get-direction-' + place.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' : '' ;
-    var specialty = (place.specialty) ? 'Specialty : ' + place.specialty + '<br>' : '' ;
-    var placeTypes = (place.types) ? 'Restaurant type : ' + place.types + '<br>' : '';
-    var rating = (place.specialty) ? 'Rating : ' + place.specialty + '<br>' : '' ;
+    if(place){
+      var placeName = (place.name) ? '<strong>' + place.name + ' </strong><br><br>' : '' ;
+      var placeVicinity = (place.vicinity) ? place.vicinity + '<br> <a href="#" id="get-direction-' + place.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' : '' ;
+      var specialty = (place.specialty) ? 'Specialty : ' + place.specialty + '<br>' : '' ;
+      var placeTypes = (place.types) ? 'Restaurant type : ' + place.types + '<br>' : '';
+      var rating = (place.specialty) ? 'Rating : ' + place.specialty + '<br>' : '' ;
+    }
+    
 
     var from = "";
     var checkinCount = "";
@@ -212,7 +216,7 @@ function setMarkerInfo(newMarker, place){
         customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
 
       }
-
+      infowindow.close();
         infowindow.setContent('<div>' + 
             placeName + '' +
             placeVicinity +
@@ -303,7 +307,6 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     
     return returnResponse;
   }catch(e){
-    console.log("error : ", e);
     return "";
   }
 }
