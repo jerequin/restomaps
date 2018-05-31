@@ -2,8 +2,9 @@
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-var map, defaultLocation, circle;
+var map, defaultLocation, circle, circleMarker;
 var markers = [];
+var circlemarkers = [];
 
 
 function initMap() {
@@ -33,7 +34,7 @@ function initMap() {
   },
   function(results, status, pagination) {
     if (status !== 'OK') return;
-
+    // console.log(results);
     createMarkers(results);
     moreButton.disabled = !pagination.hasNextPage;
     getNextPage = pagination.hasNextPage && function() {
@@ -73,6 +74,9 @@ function filterTypes() {
     if (getNextPage) getNextPage();
   };
 
+  if (types == "") {
+    types = "restaurant";
+  }
   // Perform a nearby search.
   service.nearbySearch(
   {
@@ -125,6 +129,7 @@ function createMarkers(places) {
 
     var li = document.createElement('li');
     var a = document.createElement('a');
+
     var placeVicinity = (place.vicinity) ?  '<a href="#" id="get-direction-' + place.id + '" class="get-direction">'+ place.name+'GO HERE!</a><br><br>' : '' ;
     a.textContent = place.name;
     a.setAttribute("id", 'get-direction-' + place.id )
@@ -159,6 +164,20 @@ function deleteMarkers() {
   markers = [];
 }
 
+function setMapOnAllCircle(map) {
+  for (var i = 0; i < circlemarkers.length; i++) {
+    circlemarkers[i].setMap(map);
+  }
+}
+
+function clearCircleMarkers() {
+  setMapOnAllCircle(null);
+}
+
+function deleteCircleMarkers() {
+  clearCircleMarkers();
+  circlemarkers = [];
+}
 
 function setMarkerInfo(newMarker, place){
 
@@ -238,10 +257,8 @@ function calculateAndDisplayRoute(destination, name) {
         summaryPanel.innerHTML = '';
         // For each route, display summary information.
         for (var i = 0; i < route.legs.length; i++) {
-          var routeSegment = i + 1;
-          summaryPanel.innerHTML += '<b>Route : ' + routeSegment +
-              '</b><br>';
-          summaryPanel.innerHTML += "START " + route.legs[i].start_address + ' to <br>';
+          // var routeSegment = i + 1;
+          summaryPanel.innerHTML += "START " + route.legs[i].start_address + '<br><br>';
           summaryPanel.innerHTML += "END " + route.legs[i].end_address + '<br>';
           summaryPanel.innerHTML += route.legs[i].distance.text + '<br><br>';
         }
@@ -306,6 +323,7 @@ function draw(){
 
 
 function onCircleComplete(shape) {
+  deleteCircleMarkers();
     if (shape == null || (!(shape instanceof google.maps.Circle))) return;
 
     if (circle != null) {
@@ -327,8 +345,8 @@ function onCircleComplete(shape) {
     newService.nearbySearch({
         location: {lat : circle.getCenter().lat(), lng : circle.getCenter().lng() },
         radius: circle.getRadius(),
-        type: [types]
-,    }, function callback(results, status) {
+        type: [types],
+        }, function callback(results, status) {
         let restoNumbers = 0;
         if (status === google.maps.places.PlacesServiceStatus.OK) {
             circlerestaurants = results;
@@ -338,19 +356,19 @@ function onCircleComplete(shape) {
 
         createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers, circlerestaurants);
     });
-    console.log('radius', circle.getRadius());
-    console.log('lat', circle.getCenter().lat());
-    console.log('lng', circle.getCenter().lng());
+    // console.log('radius', circle.getRadius());
+    // console.log('lat', circle.getCenter().lat());
+    // console.log('lng', circle.getCenter().lng());
 }
 
 function createCircleLabel(lat, lng, restoNumbers, place){
 
-   marker = new google.maps.Marker({
+   circleMarker = new google.maps.Marker({
       map: map,
       position: {lat : lat, lng : lng},
       label: restoNumbers.toString()
   });
 
-   markers.push(marker);
-   setMarkerInfo(marker, place);
+   circlemarkers.push(circleMarker);
+   setMarkerInfo(circleMarker, place);
 }

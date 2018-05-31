@@ -1,86 +1,127 @@
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-      #map {
-        height: 100%;
-      }
-      /* Optional: Makes the sample page fill the window. */
-      html, body {
-        height: 100%;
-        margin: 0;
-        padding: 0;
-      }
+#map {
+height: 100%;
+}
+/* Optional: Makes the sample page fill the window. */
+html, body {
+height: 100%;
+margin: 0;
+padding: 0;
+}
 
-      #right-panel {
-        font-family: 'Roboto','sans-serif';
-        line-height: 30px;
-        padding-left: 10px;
-      }
+select {
+  margin: 0px 0px 15px 50px;
+  width: 150px;
+  padding: 5px 15px 5px 5px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  height: 34px;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background: url(https://image.flaticon.com/icons/svg/242/242452.svg) 96% / 15% no-repeat #eee;
+}
 
-      #right-panel select, #right-panel input {
-        font-size: 15px;
-      }
 
-      #right-panel select {
-        width: 100%;
-      }
+/* CAUTION: IE hackery ahead */
 
-      #right-panel i {
-        font-size: 12px;
-      }
-      #right-panel {
-        font-family: Arial, Helvetica, sans-serif;
-        position: absolute;
-        right: 5px;
-        top: 25%;
-        margin-top: -195px;
-        height: 400px;
-        width: 300px;
-        padding: 5px;
-        z-index: 5;
-        border: 1px solid #999;
-        background: #fff;
-      }
 
-      #right-below-panel i {
-        font-size: 12px;
-      }
-      #right-below-panel {
-        font-family: Arial, Helvetica, sans-serif;
-        position: absolute;
-        right: 5px;
-        top: 80%;
-        margin-top: -195px;
-        height: 200;
-        width: 300px;
-        padding: 5px;
-        z-index: 5;
-        border: 1px solid #999;
-        background: #fff;
-      }
+select::-ms-expand { 
+    display: none; /* remove default arrow in IE 10 and 11 */
+}
 
-      h2 {
-        font-size: 22px;
-        margin: 0 0 5px 0;
-      }
-      ul {
-        list-style-type: none;
-        padding: 0;
-        margin: 0;
-        height: 271px;
-        width: 300px;
-        overflow-y: scroll;
-      }
-      li {
-        background-color: #f1f1f1;
-        padding: 10px;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-        overflow: hidden;
-      }
-      li:nth-child(odd) {
-        background-color: #fcfcfc;
-      }
-      #more {
-        width: 100%;
-        margin: 5px 0 0 0;
-      }
+/* target Internet Explorer 9 to undo the custom arrow */
+@media screen and (min-width:0\0) {
+    select {
+        background:none\9;
+        padding: 5px\9;
+    }
+}
+
+ul {
+list-style-type: none;
+padding: 0;
+margin: 0;
+height: 400px;
+width: 300px;
+overflow-y: scroll;
+}
+li {
+background-color: #f1f1f1;
+padding: 10px;
+text-overflow: ellipsis;
+white-space: nowrap;
+overflow: hidden;
+}
+li:nth-child(odd) {
+background-color: #fcfcfc;
+}
+.sidenav {
+margin: 10px;
+margin-top: 50px;
+height: 100%;
+width: 300px;
+position: fixed;
+z-index: 1;
+top: 0;
+left: 0;
+background-color:rgba(208, 202, 202, 0.5);;
+overflow-x: hidden;
+}
+
+.sidenav a {
+padding: 6px 6px 6px 32px;
+text-decoration: none;
+font-size: 14px;
+color: #818181;
+display: block;
+}
+
+/*.sidenav hover {
+color: #f1f1f1;
+position: absolute;
+}*/
+
+.main {
+margin-left: 200px; /* Same as the width of the sidenav */
+}
+
+@media screen and (max-height: 450px) {
+.sidenav {padding-top: 15px;}
+.sidenav a {font-size: 18px;}
+}
+
+.navdisplays {
+	display: block;
+	background-color: #fcfcfc;
+}
+
+.navdisplays strong {
+	padding: 10px;
+}
+
+.navdisplays strong select{
+	padding: 10px;
+}
+
+button {
+  padding: 10px;
+  margin: 15px 0px 15px 75px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  outline: none;
+  color: #fff;
+      background-color: #537aff;
+    border: none;
+    border-radius: 15px;
+    box-shadow: 0 9px #bbb5d4;
+}
+
+.button:hover {background-color: #bbb5d4}
+
+.button:active {
+  background-color: #3e8e41;
+  box-shadow: 0 5px #666;
+  transform: translateY(4px);

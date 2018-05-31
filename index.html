@@ -11,28 +11,32 @@
   </head>
   <body>
     <div id="map"></div>
-    <div id="right-panel">
 
-      <strong>Types :</strong>
-      <select id="types">
-        <option value="">All</option>
-        <option value="food">Food</option>
-        <option value="restaurant">Restaurant</option>
-        <option value="cafe">Cafe</option>
-        <option value="store">Store</option>
-        <option value="meal_delivery">Meal Delivery</option>
-        <option value="night_club">Night Club</option>
-      </select>
-
-      <h2>Results</h2>
-      <ul id="places"></ul>
-      <button id="more">More results</button>
-
-      
-    </div>
-    <div id="right-below-panel">
-      <strong>Directions</strong>
-      <div id="directions-panel">
+    <div class="sidenav">
+      <div class="navdisplays">
+        <h3>Select Types</h3>
+        <select id="types" class="custom-select">
+          <option value="">All</option>
+          <option value="food">Food</option>
+          <option value="restaurant">Restaurant</option>
+          <option value="cafe">Cafe</option>
+          <option value="store">Store</option>
+          <option value="meal_delivery">Meal Delivery</option>
+          <option value="night_club">Night Club</option>
+        </select>
+      </div>
+      <div class="navdisplays">
+        <h2>Results</h2>
+        <ul id="places"></ul>
+      </div>
+      <div class="navdisplays">
+        <button id="more" class="button">More results</button>
+      </div>
+      <div class="navdisplays">
+        <h2>Directions</h2>
+        <div id="directions-panel">
+        </div>
+      </div>
     </div>
     <script src="scripts/main.js?v4"></script>
     <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDlZ8Y5sZPKNOxTmR4c1AdHUxBHGNJpvQw&callback=initMap&libraries=places,drawing,visualization"></script>
