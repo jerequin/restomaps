@@ -2,10 +2,10 @@
 // parameter when you first load the API. For example:
 // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
 
-var map, defaultLocation, circle, circleMarker;
+var map, defaultLocation, circle, circleMarker, directionsDisplay, directionsService;
 var markers = [];
 var circlemarkers = [];
-
+var zomatoKEY = "b1cd2a52d0e02ba345f0eb9f29088097";
 
 function initMap() {
   // Create the map.
@@ -229,6 +229,13 @@ function setMarkerInfo(newMarker, place){
     // on click get direction
     $(document).off('click', '#get-direction-' + place.id).on('click', '#get-direction-' + place.id, function() {
 
+
+        // Clear past routes
+        if (directionsDisplay != null) {
+            directionsDisplay.setMap(null);
+            directionsDisplay = null;
+        }
+
         calculateAndDisplayRoute(place.geometry.location, place.name);
 
     });
@@ -237,8 +244,8 @@ function setMarkerInfo(newMarker, place){
 // get and set destination
 function calculateAndDisplayRoute(destination, name) {
     // directions request on service
-    var directionsService = new google.maps.DirectionsService;
-    var directionsDisplay = new google.maps.DirectionsRenderer;
+    directionsService = new google.maps.DirectionsService;
+    directionsDisplay = new google.maps.DirectionsRenderer;
 
     directionsDisplay.setMap(map);
     directionsService.route({
@@ -252,6 +259,8 @@ function calculateAndDisplayRoute(destination, name) {
     {
       if (status === 'OK') {
         directionsDisplay.setDirections(response);
+
+        console.log("directionsDisplay : ", directionsDisplay);
         var route = response.routes[0];
         var summaryPanel = document.getElementById('directions-panel');
         summaryPanel.innerHTML = '';
@@ -285,6 +294,7 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     let returnResponse = {};
 
     if(response){
+      console.log(response.response.venues[0]);
       returnResponse.customerCount = (typeof response.response.venues[0].stats.usersCount != "undefined") ? response.response.venues[0].stats.usersCount : "";
       returnResponse.checkinCount = (typeof response.response.venues[0].stats.checkinsCount != "undefined") ? response.response.venues[0].stats.checkinsCount : "";
 
@@ -372,3 +382,4 @@ function createCircleLabel(lat, lng, restoNumbers, place){
    circlemarkers.push(circleMarker);
    setMarkerInfo(circleMarker, place);
 }
+ 

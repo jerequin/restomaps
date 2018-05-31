@@ -121,6 +121,11 @@ button {
 
 .button:hover {background-color: #bbb5d4}
 
+.button:disabled {
+	background-color: #bbb5d4;
+	cursor: not-allowed;
+}
+
 .button:active {
   background-color: #3e8e41;
   box-shadow: 0 5px #666;
