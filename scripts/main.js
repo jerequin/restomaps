@@ -198,7 +198,7 @@ function setMarkerInfo(newMarker, place){
 
     if(place){
       var placeName = (place.name) ? '<h2>' + place.name + ' </h2>' : '' ;
-      var placeVicinity = (place.vicinity) ? place.vicinity + '<br> <a href="#" id="get-direction-' + place.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' : '' ;
+      var placeVicinity = (place.vicinity) ? place.vicinity + '<br> <a href="#" id="get-direction-' + place.id + '" class="get-direction">GO HERE and see directions!</a><br>' : '' ;
       var specialty = (place.specialty) ? 'Specialty : ' + place.specialty + '<br>' : '' ;
       var placeTypes = (place.types) ? 'Restaurant type : ' + place.types + '<br>' : '';
       var rating = ""
@@ -223,7 +223,7 @@ function setMarkerInfo(newMarker, place){
       let venues = callFourSquare(place.geometry.location.toUrlValue(5), place.name); //to display data from FourSquare
       console.log("place: ", place);
       if (venues != ""){
-        from = "<strong>From FOURSQUARE :</strong><br>";
+        from = "<strong style='color: orange; font-size: 15px;'>FOURSQUARE :</strong><br>";
         checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
         customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
 
