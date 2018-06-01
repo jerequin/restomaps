@@ -12,6 +12,9 @@ function initMap() {
   // Create the map.
   defaultLocation = {lat: 10.3157, lng: 123.8854};
   map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeControlOptions: {
+        position: google.maps.ControlPosition.TOP_CENTER
+    },
     center: defaultLocation,
     zoom: 15
   });
@@ -112,12 +115,15 @@ function createMarkers(places) {
 
   for (var i = 0, place; place = places[i]; i++) {
     // console.log("place : ", place);
+
+    console.log("icon : ",  place.icon);
+
     var image = {
       url: place.icon,
       size: new google.maps.Size(71, 71),
       origin: new google.maps.Point(0, 0),
       anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(25, 25)
+      scaledSize: new google.maps.Size(30, 30)
     };
 
     marker = new google.maps.Marker({
@@ -235,7 +241,6 @@ function setMarkerInfo(newMarker, place){
 
     // on click get direction
     $(document).off('click', '#get-direction-' + place.id).on('click', '#get-direction-' + place.id, function() {
-
 
         // Clear past routes
         if (directionsDisplay != null) {

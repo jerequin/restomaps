@@ -1,15 +1,15 @@
 /* Always set the map height explicitly to define the size of the div
        * element that contains the map. */
-#map {
-height: 100%;
-}
+
 /* Optional: Makes the sample page fill the window. */
+
 html, body {
-	font-family: Helvetica, Arial, Sans-Serif;
-height: 100%;
-margin: 0;
-padding: 0;
+	font-family: Lato, Sans-Serif;
+	height: 100%;
+	margin: 0;
+	padding: 0;
 }
+
 
 select {
   margin: 0px 0px 15px 50px;
@@ -27,9 +27,9 @@ select {
 
 /* CAUTION: IE hackery ahead */
 
-
+/* remove default arrow in IE 10 and 11 */
 select::-ms-expand { 
-    display: none; /* remove default arrow in IE 10 and 11 */
+    display: none; 
 }
 
 /* target Internet Explorer 9 to undo the custom arrow */
@@ -54,17 +54,24 @@ padding: 10px;
 text-overflow: ellipsis;
 white-space: nowrap;
 overflow: hidden;
+cursor: pointer;
 }
 li:nth-child(odd) {
 background-color: #fcfcfc;
 }
+
+
+
+li:hover {
+	background-color: #bbb5d4
+}
+
 .sidenav {
-margin: 50px 10px 10px 50px;
-margin-top: 50px;
-height: 100%;
+border-radius: 25px;
+margin: 10px 10px 10px 50px;
+margin-top: 10px;
+height: 90%;
 width: 300px;
-position: fixed;
-z-index: 1;
 top: 0;
 left: 0;
 background-color:rgba(208, 202, 202, 0.5);;
@@ -79,13 +86,10 @@ color: #818181;
 display: block;
 }
 
-/*.sidenav hover {
-color: #f1f1f1;
-position: absolute;
-}*/
+
 
 .main {
-margin-left: 200px; /* Same as the width of the sidenav */
+margin-left: 200px; 
 }
 
 @media screen and (max-height: 450px) {
@@ -107,17 +111,17 @@ margin-left: 200px; /* Same as the width of the sidenav */
 }
 
 button {
-  padding: 10px;
-  margin: 15px 0px 15px 75px;
-  font-size: 16px;
-  text-align: center;
-  cursor: pointer;
-  outline: none;
-  color: #fff;
-      background-color: #537aff;
-    border: none;
-    border-radius: 15px;
-    box-shadow: 0 9px #bbb5d4;
+	padding: 10px;
+	margin: 15px 0px 15px 75px;
+	font-size: 16px;
+	text-align: center;
+	cursor: pointer;
+	outline: none;
+	color: #fff;
+	background-color: #537aff;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 9px #bbb5d4;
 }
 
 .button:hover {background-color: #bbb5d4}
@@ -128,6 +132,65 @@ button {
 }
 
 .button:active {
-  background-color: #3e8e41;
-  box-shadow: 0 5px #666;
-  transform: translateY(4px);
+	background-color: #3e8e41;
+	box-shadow: 0 5px #666;
+	transform: translateY(4px);
+}
+
+
+#map {
+height: 100%;
+/*z-index: -1; position:relative;*/
+}
+.sidebar {
+    width: 400px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: gray;
+}
+
+.sidebar h1 {
+    color: white;
+}
+
+.portfolio {
+    position: absolute;
+    top: 0;
+    left: 400px;
+    right: 0;
+    bottom: 0;
+    
+    -moz-transition: left 0.5s ease;
+    transition: left 0.5s ease;
+}
+
+input[type=checkbox] {
+   display: none;
+}
+
+input:checked ~ .portfolio { 
+    left: 0;
+}
+
+input:checked ~ #close {
+    left: 0;
+}
+
+#close{
+    z-index: 2;
+    position: absolute;
+    top: 0;
+    left: 400px;
+    padding: 10px;
+    margin: 10px;
+    font-size: 20px;
+    border-radius: 10px;
+    background-color: #537aff;
+    -moz-transition: left 0.5s ease;
+    transition: left 0.5s ease;
+    box-shadow: 0 9px #bbb5d4;
+}
+
+#close:hover {background-color: #bbb5d4}
