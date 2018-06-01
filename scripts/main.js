@@ -114,10 +114,6 @@ function createMarkers(places) {
   var placesList = document.getElementById('places');
 
   for (var i = 0, place; place = places[i]; i++) {
-    // console.log("place : ", place);
-
-    console.log("icon : ",  place.icon);
-
     var image = {
       url: place.icon,
       size: new google.maps.Size(71, 71),
@@ -193,19 +189,28 @@ function setMarkerInfo(newMarker, place){
   var opening = '';
     if (typeof place != "undefined" && place.opening_hours) {
         if (place.opening_hours.open_now) {
-            opening = '<strong><span style="color: green;">Open now</span></strong><br>';
+            opening = '<h3 style="color: green;">Open now</h3>';
         } else {
-            opening = '<strong><span style="color: red;">Closed</span></strong><br>';
+            opening = '<h3 style="color: red;">Closed</h3>';
         }
 
     }
 
     if(place){
-      var placeName = (place.name) ? '<strong>' + place.name + ' </strong><br><br>' : '' ;
+      var placeName = (place.name) ? '<h2>' + place.name + ' </h2>' : '' ;
       var placeVicinity = (place.vicinity) ? place.vicinity + '<br> <a href="#" id="get-direction-' + place.id + '" class="get-direction">GO HERE and see directions!</a><br><br>' : '' ;
       var specialty = (place.specialty) ? 'Specialty : ' + place.specialty + '<br>' : '' ;
       var placeTypes = (place.types) ? 'Restaurant type : ' + place.types + '<br>' : '';
-      var rating = (place.specialty) ? 'Rating : ' + place.specialty + '<br>' : '' ;
+      var rating = ""
+      if (place.rating){
+        if(place.rating > 3.5){
+          rating = '<h3 style="color: green;">Rating : ' + place.rating + '</h3>';
+        }else if(place.rating > 2.5){
+          rating = '<h3 style="color: orange;">Rating : ' + place.rating + '</h3>';
+        }else{
+          rating = '<h3 style="color: red;">Rating : ' + place.rating + '</h3>';
+        }
+      }
     }
     
 
@@ -216,20 +221,20 @@ function setMarkerInfo(newMarker, place){
     // add on click event on markers to show restaurant details
     google.maps.event.addListener(newMarker, 'click', function() {
       let venues = callFourSquare(place.geometry.location.toUrlValue(5), place.name); //to display data from FourSquare
+      console.log("place: ", place);
       if (venues != ""){
         from = "<strong>From FOURSQUARE :</strong><br>";
         checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
         customerCount = (venues.customerCount) ? 'Customer Count : ' + venues.customerCount + '<br>': "";
 
       }
-      infowindow.close();
         infowindow.setContent('<div>' + 
             placeName + '' +
             placeVicinity +
             opening +
-            placeTypes +
             specialty +
-            rating + "<br>" + 
+            rating  + 
+            placeTypes + "<br>" + 
             from +
             checkinCount +
             customerCount
@@ -303,6 +308,8 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     xhttp.send();
     var response = JSON.parse(xhttp.responseText);
     let returnResponse = {};
+
+    console.log(response);
 
     if(response){
       returnResponse.customerCount = (typeof response.response.venues[0].stats.usersCount != "undefined") ? response.response.venues[0].stats.usersCount : "";
