@@ -58,9 +58,20 @@ function initMap() {
 
 }
 
+function zomato(){
+  console.log('was here');
+  $.get("zomato.php").then(function (response, status) {
+    console.log("Zomato : ", response);
+  }).catch(function (e) {
+    console.log(e);
+  });
+}
+
 
 function filterTypes() {
   // Create the map.
+
+  zomato();
   let types = document.getElementById("types").value;
 
 
@@ -203,7 +214,7 @@ function setMarkerInfo(newMarker, place){
       var placeTypes = (place.types) ? 'Restaurant type : ' + place.types + '<br>' : '';
       var rating = ""
       if (place.rating){
-        if(place.rating > 3.5){
+        if(place.rating > 3.9){
           rating = '<h3 style="color: green;">Rating : ' + place.rating + '</h3>';
         }else if(place.rating > 2.5){
           rating = '<h3 style="color: orange;">Rating : ' + place.rating + '</h3>';
@@ -301,7 +312,7 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     var oAuthToken = "I25B33JZSODPTRGZL51MUF1LH313XORDHNRQELUVIFHSBYEF";
     var xhttp = new XMLHttpRequest();
     // var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id=3NDCCM2DYYVQUQXIDBB2MMIGVPTNDGYEXK4CIAQSUXNLQX3F&client_secret=S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW&v=20180530"
-    var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id="+clientId+"&client_secret="+clientSecret+"&oauth_token="+oAuthToken+"&v=20180530"
+    var url = "https://api.foursquare.com/v2/venues/search?intent=match&ll="+coordinates+"&name="+restoName+"&limit=10&client_id="+clientId+"&client_secret="+clientSecret+"&oauth_token="+oAuthToken+"&v=20180530";
 
     
     xhttp.open("GET", url, false);
