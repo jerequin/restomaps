@@ -12,12 +12,11 @@ html, body {
 
 
 select {
-  margin: 0px 0px 15px 50px;
-  width: 150px;
-  padding: 5px 15px 5px 5px;
+  margin: 10px;
+  width: 300px;
   font-size: 16px;
   border: 1px solid #ccc;
-  height: 34px;
+  height: 50px;
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -44,8 +43,8 @@ ul {
 list-style-type: none;
 padding: 0;
 margin: 0;
-height: 400px;
-width: 300px;
+height: 350px;
+width: 420px;
 overflow-y: scroll;
 }
 li {
@@ -56,34 +55,41 @@ white-space: nowrap;
 overflow: hidden;
 cursor: pointer;
 }
+
+li:nth-child(even) {
+background-color: #dcdbdb;
+}
+
+
 li:nth-child(odd) {
-background-color: #fcfcfc;
+background-color: #b4b7ff;
 }
 
 
 
 li:hover {
-	background-color: #bbb5d4
+	background-color: #bbb5d4;
 }
 
 .sidenav {
 border-radius: 25px;
-margin: 10px 10px 10px 50px;
-margin-top: 10px;
-height: 90%;
-width: 300px;
+margin: 20px 10px 10px 20px;
+height: 95%;
+width: 420px;
 top: 0;
 left: 0;
 background-color:rgba(208, 202, 202, 0.5);;
-overflow-x: hidden;
+/*overflow-x: hidden;*/
+float: left;
 }
 
 .sidenav a {
 padding: 6px 6px 6px 0px;
-text-decoration: none;
-font-size: 14px;
-color: #818181;
+text-decoration: all;
+font-size: 15px;
+color: #000000;
 display: block;
+
 }
 
 
@@ -102,13 +108,19 @@ margin-left: 200px;
 	background-color: #fcfcfc;
 }
 
-.navdisplays strong {
+.navdisplays h3 {
+	padding: 10px 10px 0px 30px;
+}
+
+.navdisplays h2 {
+    padding: 10px 10px 0px 30px;
+}
+
+.navdisplays h3 select{
 	padding: 10px;
 }
 
-.navdisplays strong select{
-	padding: 10px;
-}
+
 
 button {
 	padding: 10px;
@@ -142,13 +154,14 @@ button {
 height: 100%;
 /*z-index: -1; position:relative;*/
 }
+
 .sidebar {
-    width: 400px;
+    width: 900px;
     position: absolute;
     top: 0;
     left: 0;
     bottom: 0;
-    background-color: gray;
+    background-color: #616175;
 }
 
 .sidebar h1 {
@@ -158,39 +171,109 @@ height: 100%;
 .portfolio {
     position: absolute;
     top: 0;
-    left: 400px;
+    left: 0;
     right: 0;
     bottom: 0;
     
     -moz-transition: left 0.5s ease;
     transition: left 0.5s ease;
+
 }
 
 input[type=checkbox] {
    display: none;
 }
 
+
 input:checked ~ .portfolio { 
-    left: 0;
+    left: 900px;
 }
 
+/*input:checked ~ .footer { 
+    visibility: hidden;
+}
+*/
+
+
 input:checked ~ #close {
-    left: 0;
+    left: 900px;
+    bottom: 0;
 }
 
 #close{
     z-index: 2;
+    height: 20px;
     position: absolute;
     top: 0;
-    left: 400px;
+    left: 0;
     padding: 10px;
     margin: 10px;
     font-size: 20px;
     border-radius: 10px;
     background-color: #537aff;
     -moz-transition: left 0.5s ease;
-    transition: left 0.5s ease;
+    transition: left 0.5s cubic-bezier(0.42, -0.34, 0.38, 1.27);
     box-shadow: 0 9px #bbb5d4;
 }
 
 #close:hover {background-color: #bbb5d4}
+
+#zomato {
+    border-radius: 10px;
+    background-color: gray;
+    margin: 10px 0px 10px 10px;
+    height: 400px;
+    width: 400px;
+    float: left;
+
+}
+
+#foursquare {
+    border-radius: 10px;
+    background-color: gray;
+    margin: 10px 0px 10px 10px;
+    height: 400px;
+    width: 400px;
+    float: left;
+}
+
+.pac-card {
+margin: 10px 10px 0 0;
+border-radius: 2px 0 0 2px;
+box-sizing: border-box;
+-moz-box-sizing: border-box;
+outline: none;
+box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+background-color: #fff;
+font-family: Roboto;
+}
+
+#pac-container {
+padding-bottom: 12px;
+margin-right: 12px;
+}
+
+.pac-controls {
+display: inline-block;
+padding: 5px 11px;
+}
+
+.pac-controls label {
+font-family: Roboto;
+font-size: 13px;
+font-weight: 300;
+}
+
+#pac-input {
+background-color: #fff;
+font-family: Roboto;
+font-size: 15px;
+font-weight: 300;
+margin: 20px;
+text-overflow: ellipsis;
+width: 250px;
+}
+
+#pac-input:focus {
+border-color: #4d90fe;
+}

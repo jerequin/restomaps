@@ -56,22 +56,88 @@ function initMap() {
 
   draw();
 
+  initAutocomplete();
+
+  google.charts.load('current', {'packages':['bar']});
+  google.charts.setOnLoadCallback(zomatoChart);
+  google.charts.setOnLoadCallback(foursquareChart);
+
 }
 
-function zomato(){
-  console.log('was here');
-  $.get("zomato.php").then(function (response, status) {
-    console.log("Zomato : ", response);
-  }).catch(function (e) {
-    console.log(e);
+
+function zomatoChart() {
+
+  var restaurants;
+  $.getJSON( "json/zomato.json", function( data ) {
+    //first 10 only 
+    restaurants = data.restaurants.slice(0,10);
+    var arrayResults = [];
+    arrayResults.push(['Restaurant', 'Rating', 'Votes', 'Average Cost for 2']);
+    // arrayResults.push(['Restaurant', 'Rating']);
+
+    
+    restaurants.forEach(function(val) {
+      arrayResults.push([val.restaurant.name, parseFloat(val.restaurant.user_rating.aggregate_rating), parseInt(val.restaurant.user_rating.votes), parseInt(val.restaurant.average_cost_for_two)]);
+      // arrayResults.push([val.restaurant.name, parseFloat(val.restaurant.user_rating.aggregate_rating)]);
+    });
+
+    var data = google.visualization.arrayToDataTable(
+        arrayResults
+    );
+
+    var options = {
+      chart: {
+        title: 'Zomato',
+        subtitle: 'Restaurants Rating',
+
+      },
+      bars: 'vertical' // Required for Material Bar Charts.
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('zomato'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
+
+
+  });
+}
+
+function foursquareChart() {
+  var restaurants;
+  $.getJSON( "json/foursquare.json", function( data ) {
+    //first 10 only 
+    restaurants = data.restaurants.slice(0,10);
+    var arrayResults = [];
+    arrayResults.push(['Restaurant', 'No. Check-Ins', 'No. Customers']);
+    // arrayResults.push(['Restaurant', 'Rating']);
+
+    
+    restaurants.forEach(function(val) {
+      arrayResults.push([val.name, parseInt(val.stats.usersCount), parseInt(val.stats.checkinsCount)]);
+    });
+
+    var data = google.visualization.arrayToDataTable(
+        arrayResults
+    );
+
+    var options = {
+      chart: {
+        title: 'FourSquare',
+        subtitle: 'Restaurants Rating',
+
+      },
+      bars: 'vertical' // Required for Material Bar Charts.
+    };
+
+    var chart = new google.charts.Bar(document.getElementById('foursquare'));
+    chart.draw(data, google.charts.Bar.convertOptions(options));
+
   });
 }
 
 
 function filterTypes() {
   // Create the map.
-
-  zomato();
   let types = document.getElementById("types").value;
 
 
@@ -410,3 +476,33 @@ function createCircleLabel(lat, lng, restoNumbers, place){
    setMarkerInfo(circleMarker, place);
 }
  
+
+
+ function initAutocomplete() {
+
+  map = new google.maps.Map(document.getElementById('map'), {
+    center: defaultLocation,
+    zoom: 10,
+    mapTypeId: 'roadmap'
+  });
+
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('pac-input');
+  var searchBox = new google.maps.places.SearchBox(input);
+
+  // Bias the SearchBox results towards current map's viewport.
+  map.addListener('bounds_changed', function() {
+    searchBox.setBounds(map.getBounds());
+  });
+
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    createMarkers(places);
+
+  });
+}

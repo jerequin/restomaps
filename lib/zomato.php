@@ -24,5 +24,13 @@
 
 	$ret = json_decode($resp, true);
 
-	print_r($ret);
+	$response['restaurants'] = $ret['restaurants'];
+
+	$fp = fopen('../json/zomato.json', 'w+');
+	fwrite($fp, json_encode($response, JSON_PRETTY_PRINT));
+	fclose($fp);
+
+
+	echo "Saved Zomato Data!";
+
 ?>

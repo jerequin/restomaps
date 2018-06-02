@@ -4,8 +4,8 @@
     $clientSecret = "S3YYYPHGA1EGTMXGW5WZUQIFROAEHRFG43PYA2ENQITMCWYW";
     $oAuthToken = "I25B33JZSODPTRGZL51MUF1LH313XORDHNRQELUVIFHSBYEF";
 	$coordinates = "10.3157,123.8854";
-
-	$url = "https://api.foursquare.com/v2/venues/search?&ll=".$coordinates."&client_id=".$clientId."&client_secret=".$clientSecret."&oauth_token=".$oAuthToken."&v=20180530";
+	$food = "4d4b7105d754a06374d81259";
+	$url = "https://api.foursquare.com/v2/venues/search?&ll=".$coordinates."&categoryId=".$food."&radius=4000&client_id=".$clientId."&client_secret=".$clientSecret."&oauth_token=".$oAuthToken."&v=20180530";
 
     $curl = curl_init();
 	// Set some options - we are passing in a useragent too here
@@ -21,20 +21,11 @@
 
 	$ret = json_decode($resp, true);
 
-	foreach ($ret['response']['venues'] as $key => $value) {
-		# code...
-	  $posts[] = array(
-	  	'id'=> $value['id'], 
-	  	'name'=> $value['name']
-	  );
-	} 
+	$response['restaurants'] = $ret['response']['venues'];
 
-	$response['posts'] = $posts;
-
-	$fp = fopen('foursquare.json', 'w+');
+	$fp = fopen('../json/foursquare.json', 'w+');
 	fwrite($fp, json_encode($response, JSON_PRETTY_PRINT));
 	fclose($fp);
 
-	print_r($response['posts']);
-
+	echo "Saved FourSquare Data!";
 ?>
