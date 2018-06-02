@@ -39,7 +39,6 @@ function initMap() {
   },
   function(results, status, pagination) {
     if (status !== 'OK') return;
-    // console.log(results);
     createMarkers(results);
     moreButton.disabled = !pagination.hasNextPage;
     getNextPage = pagination.hasNextPage && function() {
@@ -53,7 +52,6 @@ function initMap() {
       filterTypes();
   });
 
-console.log("DRAW");
   draw();
 
   initAutocomplete();
@@ -191,6 +189,29 @@ function createMarkers(places) {
   var placesList = document.getElementById('places');
 
   for (var i = 0, place; place = places[i]; i++) {
+
+    var newIcon = place.icon.replace("place_api/icons", "ms2/micons");
+        newIcon = newIcon.replace("-71","");
+
+    var iconShadow = newIcon.replace(".png", ".shadow.png");
+
+    if(~newIcon.indexOf("generic_business")){
+        newIcon = newIcon.replace("generic_business","restaurant");
+    }else if(~newIcon.indexOf("cafe")){
+        newIcon = newIcon.replace("cafe","restaurant");
+    }
+
+
+    var pinImage = new google.maps.MarkerImage(newIcon,
+        new google.maps.Size(71, 71),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(17, 34),
+        new google.maps.Size(30, 30));
+    var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
+        new google.maps.Size(71, 71),
+        new google.maps.Point(0, 0),
+        new google.maps.Point(17, 34));
+
     var image = {
       url: place.icon,
       size: new google.maps.Size(71, 71),
@@ -201,7 +222,8 @@ function createMarkers(places) {
 
     marker = new google.maps.Marker({
       map: map,
-      icon: image,
+      icon: pinImage,
+      shadow: pinShadow,
       title: place.name,
       position: place.geometry.location
     });
@@ -298,7 +320,6 @@ function setMarkerInfo(newMarker, place){
     // add on click event on markers to show restaurant details
     google.maps.event.addListener(newMarker, 'click', function() {
       let venues = callFourSquare(place.geometry.location.toUrlValue(5), place.name); //to display data from FourSquare
-      console.log("place: ", place);
       if (venues != ""){
         from = "<strong style='color: orange; font-size: 15px;'>FOURSQUARE :</strong><br>";
         checkinCount = (venues.checkinCount) ? 'Checkin Count : ' + venues.checkinCount + '<br>': "";
@@ -386,8 +407,6 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
     var response = JSON.parse(xhttp.responseText);
     let returnResponse = {};
 
-    console.log(response);
-
     if(response){
       returnResponse.customerCount = (typeof response.response.venues[0].stats.usersCount != "undefined") ? response.response.venues[0].stats.usersCount : "";
       returnResponse.checkinCount = (typeof response.response.venues[0].stats.checkinsCount != "undefined") ? response.response.venues[0].stats.checkinsCount : "";
@@ -402,7 +421,6 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
 
 function draw(){
 
-  console.log("DRAW!");
   var drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: null,
       drawingControl: true,
@@ -461,9 +479,6 @@ function onCircleComplete(shape) {
 
         createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers, circlerestaurants);
     });
-    // console.log('radius', circle.getRadius());
-    // console.log('lat', circle.getCenter().lat());
-    // console.log('lng', circle.getCenter().lng());
 }
 
 function createCircleLabel(lat, lng, restoNumbers, place){

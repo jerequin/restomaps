@@ -10,6 +10,11 @@ html, body {
 	padding: 0;
 }
 
+#map {
+height: 100%;
+/*z-index: -1; position:relative;*/
+}
+
 
 select {
   margin: 10px;
@@ -102,6 +107,37 @@ width: 100%;
 margin-left: 200px; 
 }
 
+
+.sidebar .navbar{
+    width: 76%;
+    }
+
+.sidebar {
+    width: 76%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #616175;
+}
+
+.sidebar h1 {
+    color: white;
+}
+
+.portfolio {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    
+    -moz-transition: left 0.5s ease;
+    transition: left 0.5s ease;
+
+}
+
 @media screen and (max-height: 450px) {
 .sidenav {padding-top: 15px;}
 .sidenav a {font-size: 18px;}
@@ -157,40 +193,13 @@ button {
 }
 
 
-#map {
-height: 100%;
-/*z-index: -1; position:relative;*/
-}
 
-.sidebar .navbar{
-    width: 76%;
-    }
 
-.sidebar {
-    width: 76%;
-    height: 100%;
-    position: absolute;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    background-color: #616175;
-}
+img[src="https://maps.gstatic.com/mapfiles/place_api/icons/lodging-71.png"]{
+    strokeColor: '#869de3',
+    strokeWeight: 2,
+  }
 
-.sidebar h1 {
-    color: white;
-}
-
-.portfolio {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    
-    -moz-transition: left 0.5s ease;
-    transition: left 0.5s ease;
-
-}
 
 input[type=checkbox] {
    display: none;
