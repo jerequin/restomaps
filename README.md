@@ -69,3 +69,7 @@ See : https://jerequin.github.io/restomaps/
  8.  Add any value adding feature like analytics to show relationships between patrons, restaurant and revenue. 
  	- Plotted in Bar Graph the details got from Zomato (Rating, Votes, Average Price for 2) and FourSquare (No. CheckIns, No. of Customers)
  
+###Others
+
+Created script for getting Zomato, FourSquare and GooglePlaces Details listed in lib folder e.g. lib/zomato.php
+
