@@ -190,15 +190,14 @@ function createMarkers(places) {
 
   for (var i = 0, place; place = places[i]; i++) {
 
-    var newIcon = place.icon.replace("place_api/icons", "ms2/micons");
-        newIcon = newIcon.replace("-71","");
-
-    var iconShadow = newIcon.replace(".png", ".shadow.png");
-
-    if(~newIcon.indexOf("generic_business")){
-        newIcon = newIcon.replace("generic_business","restaurant");
-    }else if(~newIcon.indexOf("cafe")){
-        newIcon = newIcon.replace("cafe","restaurant");
+    var newIcon;
+    if(~place.icon.indexOf("generic_business")){
+        newIcon = place.icon;
+    }else if(~place.icon.indexOf("cafe")){
+        newIcon = place.icon;
+    }else {
+      newIcon = place.icon.replace("place_api/icons", "ms2/micons");
+      newIcon = newIcon.replace("-71","");
     }
 
 
@@ -207,23 +206,10 @@ function createMarkers(places) {
         new google.maps.Point(0, 0),
         new google.maps.Point(17, 34),
         new google.maps.Size(30, 30));
-    var pinShadow = new google.maps.MarkerImage("http://chart.apis.google.com/chart?chst=d_map_pin_shadow",
-        new google.maps.Size(71, 71),
-        new google.maps.Point(0, 0),
-        new google.maps.Point(17, 34));
-
-    var image = {
-      url: place.icon,
-      size: new google.maps.Size(71, 71),
-      origin: new google.maps.Point(0, 0),
-      anchor: new google.maps.Point(17, 34),
-      scaledSize: new google.maps.Size(30, 30)
-    };
 
     marker = new google.maps.Marker({
       map: map,
       icon: pinImage,
-      shadow: pinShadow,
       title: place.name,
       position: place.geometry.location
     });
@@ -476,7 +462,6 @@ function onCircleComplete(shape) {
             createMarkers(circlerestaurants);
             restoNumbers = circlerestaurants.length;
         }
-
         createCircleLabel(circle.getCenter().lat(), circle.getCenter().lng(), restoNumbers, circlerestaurants);
     });
 }
