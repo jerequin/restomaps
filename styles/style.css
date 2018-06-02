@@ -13,7 +13,7 @@ html, body {
 
 select {
   margin: 10px;
-  width: 300px;
+  width: 90%;
   font-size: 16px;
   border: 1px solid #ccc;
   height: 50px;
@@ -44,10 +44,11 @@ list-style-type: none;
 padding: 0;
 margin: 0;
 height: 350px;
-width: 420px;
+width: 100%;
 overflow-y: scroll;
 }
 li {
+    width: 100%;
 background-color: #f1f1f1;
 padding: 10px;
 text-overflow: ellipsis;
@@ -57,15 +58,15 @@ cursor: pointer;
 }
 
 li:nth-child(even) {
+    width: 100%;
 background-color: #dcdbdb;
 }
 
 
 li:nth-child(odd) {
+    width: 100%;
 background-color: #b4b7ff;
 }
-
-
 
 li:hover {
 	background-color: #bbb5d4;
@@ -75,7 +76,7 @@ li:hover {
 border-radius: 25px;
 margin: 20px 10px 10px 20px;
 height: 95%;
-width: 420px;
+width: 36%;
 top: 0;
 left: 0;
 background-color:rgba(208, 202, 202, 0.5);;
@@ -89,11 +90,14 @@ text-decoration: all;
 font-size: 15px;
 color: #000000;
 display: block;
+width: 100%;
 
 }
 
 
-
+.main-wrap {
+    width:100%;
+}
 .main {
 margin-left: 200px; 
 }
@@ -106,6 +110,7 @@ margin-left: 200px;
 .navdisplays {
 	display: block;
 	background-color: #fcfcfc;
+    width: 100%;
 }
 
 .navdisplays h3 {
@@ -120,11 +125,13 @@ margin-left: 200px;
 	padding: 10px;
 }
 
-
+.direction-panel {
+    width: 100%;
+}
 
 button {
 	padding: 10px;
-	margin: 15px 0px 15px 75px;
+	margin: 15px 0px 15px 15px;
 	font-size: 16px;
 	text-align: center;
 	cursor: pointer;
@@ -155,8 +162,13 @@ height: 100%;
 /*z-index: -1; position:relative;*/
 }
 
+.sidebar .navbar{
+    width: 76%;
+    }
+
 .sidebar {
-    width: 900px;
+    width: 76%;
+    height: 100%;
     position: absolute;
     top: 0;
     left: 0;
@@ -186,9 +198,8 @@ input[type=checkbox] {
 
 
 input:checked ~ .portfolio { 
-    left: 900px;
+    left: 60%;
 }
-
 /*input:checked ~ .footer { 
     visibility: hidden;
 }
@@ -196,7 +207,7 @@ input:checked ~ .portfolio {
 
 
 input:checked ~ #close {
-    left: 900px;
+    left: 60%;
     bottom: 0;
 }
 
@@ -221,9 +232,9 @@ input:checked ~ #close {
 #zomato {
     border-radius: 10px;
     background-color: gray;
-    margin: 10px 0px 10px 10px;
-    height: 400px;
-    width: 400px;
+    margin: 20px 0px 10px 20px;
+    height: 40%;
+    width: 90%;
     float: left;
 
 }
@@ -231,9 +242,9 @@ input:checked ~ #close {
 #foursquare {
     border-radius: 10px;
     background-color: gray;
-    margin: 10px 0px 10px 10px;
-    height: 400px;
-    width: 400px;
+    margin: 20px 0px 10px 20px;
+    height: 40%;
+    width: 90%;
     float: left;
 }
 
@@ -271,9 +282,10 @@ font-size: 15px;
 font-weight: 300;
 margin: 20px;
 text-overflow: ellipsis;
-width: 250px;
+width: 60%;
 }
 
 #pac-input:focus {
 border-color: #4d90fe;
 }
+

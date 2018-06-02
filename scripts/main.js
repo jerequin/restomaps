@@ -53,7 +53,7 @@ function initMap() {
       filterTypes();
   });
 
-
+console.log("DRAW");
   draw();
 
   initAutocomplete();
@@ -401,6 +401,8 @@ function callFourSquare(coordinates, restoName) { // get by coordinates and name
 }
 
 function draw(){
+
+  console.log("DRAW!");
   var drawingManager = new google.maps.drawing.DrawingManager({
       drawingMode: null,
       drawingControl: true,
@@ -479,12 +481,6 @@ function createCircleLabel(lat, lng, restoNumbers, place){
 
 
  function initAutocomplete() {
-
-  map = new google.maps.Map(document.getElementById('map'), {
-    center: defaultLocation,
-    zoom: 10,
-    mapTypeId: 'roadmap'
-  });
 
   // Create the search box and link it to the UI element.
   var input = document.getElementById('pac-input');
