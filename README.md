@@ -20,6 +20,11 @@ See : https://jerequin.github.io/restomaps/
  - Clicking on the Marker Icon displays information
 	 - Displays Customer and Check-in Counts using FourSquare API
 	 - Can see Destination
+ - Displays Graph in Left Panel from Zomato and Foursquare (10 restaurants each)
+ 	- Ratings, Votes and Average Price for 2 (Zomato)
+	- No. of Check-ins and No. of Cutomers
+ - *Additional Feature*
+ 	- added search input with auto-complete and will go to map.
 
 
 ### Exercise 
@@ -42,6 +47,7 @@ See : https://jerequin.github.io/restomaps/
 			scope:"GOOGLE"
 			types:(7) ["cafe",  "store",  "lodging",  "restaurant",  "food",  "point_of_interest",  "establishment"]
 			vicinity:"J. Llorente Street, Cebu City`
+	- There's *Speacials* field in FourSquare API data, but there's no values on in
 
  3.  ***A layer panel can filter the restaurant type to show.***
 	 - In the Left Panel, indicated types which I think can display different types of restaurant based on what I got in Places API
@@ -61,4 +67,5 @@ See : https://jerequin.github.io/restomaps/
 	 - When used, it will display the number of restaurants (or type when you changed it) in a marker
 	 - Also added search feature around the radius of the circle to display other restaurants.
  8.  Add any value adding feature like analytics to show relationships between patrons, restaurant and revenue. 
+ 	- Plotted in Bar Graph the details got from Zomato (Rating, Votes, Average Price for 2) and FourSquare (No. CheckIns, No. of Customers)
  
